@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.23)
-project(NitreetLibTemplate)
+project(simple_sar)
 
 set(CMAKE_CXX_STANDARD 17)
 
@@ -18,7 +18,8 @@ FILE(GLOB_RECURSE
         "${PROJECT_SRC}/*.cpp"
 )
 
-add_library(${PROJECT_NAME} SHARED ${PROJECT_FILES})
+add_library(${PROJECT_NAME} STATIC ${PROJECT_FILES})
+add_library(${PROJECT_NAME}_ready4injection MODULE ${PROJECT_FILES})
 target_include_directories(${PROJECT_NAME} PUBLIC ${PROJECT_SRC})
 
 SET(LIBRARIES_TO_LINK_PRIVATE
