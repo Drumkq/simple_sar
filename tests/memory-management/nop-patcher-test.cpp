@@ -19,6 +19,8 @@ TEST(memory_helper, nop_patcher) {
 
     auto copied_bytes = patcher::nop_area((uintptr_t)bytes, bytes_length);
 
+    ASSERT_TRUE(copied_bytes.get_address() == (uintptr_t)&bytes);
+
     auto copied_buffer_bytes = copied_bytes.get_bytes();
 
     for (int i = 0; i < bytes_length; i++) {

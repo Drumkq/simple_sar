@@ -1,5 +1,5 @@
 #include "gtest/gtest.h"
-#include "memory/bytes-buffer.hpp"
+#include "memory/buffers/bytes-buffer.hpp"
 
 TEST(bytes_buffer, buffer_clear) {
     const size_t bytes_length = 8;

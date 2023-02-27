@@ -11,15 +11,15 @@ public:
 
     ~bytes_buffer();
 
-    void reallocate_bytes(void *source, size_t length);
+    virtual void reallocate_bytes(void *source, size_t length);
 
     unsigned char const* const get_bytes() const;
 
     size_t get_length() const;
 
-    void clear();
+    virtual void clear();
 
-private:
+protected:
     unsigned char* m_bytes;
 
     size_t m_length;

@@ -1,18 +1,19 @@
 #pragma once
 
-#include "../bytes-buffer.hpp"
+#include "../buffers/runtime-buffer.hpp"
 #include <windows.h>
 
 #define NOP_INSTRUCTION 0x90
 
 namespace patcher {
-    bytes_buffer nop_area(uintptr_t destination, const size_t length) {
-        bytes_buffer buffer;
+    runtime_buffer nop_area(uintptr_t destination, const size_t length) {
+        runtime_buffer buffer;
 
         DWORD old_protection;
 
         VirtualProtect((void*)destination, length, PAGE_EXECUTE_READWRITE, &old_protection);
         {
+            buffer.set_address(destination);
             buffer.reallocate_bytes((void*)destination, length);
 
             auto nop_area = new unsigned char[length];
@@ -24,6 +25,6 @@ namespace patcher {
         }
         VirtualProtect((void*)destination, length, old_protection, &old_protection);
 
-        return bytes_buffer(buffer);
+        return runtime_buffer(buffer);
     }
 }
