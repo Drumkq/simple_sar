@@ -1,6 +1,8 @@
 #pragma once
 
 #include "../buffers/runtime-buffer.hpp"
+
+#define WIN32_LEAN_AND_MEAN
 #include <windows.h>
 
 #define NOP_INSTRUCTION 0x90
