@@ -6,8 +6,9 @@ class runtime_buffer : public bytes_buffer {
 public:
     explicit runtime_buffer(void *source, size_t length, uintptr_t address);
     runtime_buffer();
+    ~runtime_buffer();
 
-    runtime_buffer(runtime_buffer& buffer);
+    runtime_buffer(runtime_buffer &buffer);
 
     void reallocate_bytes(void *source, size_t length) override;
 

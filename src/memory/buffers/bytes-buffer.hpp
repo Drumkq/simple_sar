@@ -2,18 +2,22 @@
 
 #include <stdexcept>
 
+/***
+ * @name bytes_buffer
+ * @details implementation of a buffer to store bytes
+ */
 class bytes_buffer {
 public:
     explicit bytes_buffer(void *source, size_t length);
     bytes_buffer();
 
-    bytes_buffer(bytes_buffer& buffer);
+    bytes_buffer(bytes_buffer &buffer);
 
-    ~bytes_buffer();
+    virtual ~bytes_buffer();
 
     virtual void reallocate_bytes(void *source, size_t length);
 
-    unsigned char const* const get_bytes() const;
+    unsigned char *const get_bytes() const;
 
     size_t get_length() const;
 

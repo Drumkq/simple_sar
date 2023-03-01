@@ -5,20 +5,14 @@
 TEST(memory_helper, byte_patcher) {
     const size_t bytes_length = 5;
     unsigned char bytes[] {
-            "\x90"
-            "\xA1"
-            "\xD0"
-            "\x8A"
+        "\x90\xA1\xD0\x8A"
     };
 
     unsigned char fake_bytes[] {
-            "\x90"
-            "\xA1"
-            "\xD0"
-            "\x8A"
+        "\x90\xA1\xD0\x8A"
     };
 
-    auto copied_bytes = patcher::nop_area((uintptr_t)bytes, bytes_length);
+    auto copied_bytes = patcher::nop_area((uintptr_t) bytes, bytes_length);
 
     patcher::patch_area(copied_bytes);
 

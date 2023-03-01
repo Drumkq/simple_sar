@@ -8,8 +8,10 @@ bytes_buffer::bytes_buffer(void *source, size_t length)
 }
 
 bytes_buffer::bytes_buffer(bytes_buffer &buffer)
-        : m_length(buffer.m_length) {
-    reallocate_bytes(buffer.m_bytes, buffer.m_length);
+        : m_length(buffer.m_length), m_clean(false) {
+    m_bytes = new unsigned char[m_length];
+
+    memcpy_s(m_bytes, m_length, buffer.m_bytes, buffer.m_length);
 }
 
 bytes_buffer::bytes_buffer()
@@ -33,7 +35,7 @@ void bytes_buffer::reallocate_bytes(void *source, size_t length) {
     m_clean = false;
 }
 
-unsigned char const *const bytes_buffer::get_bytes() const {
+unsigned char *const bytes_buffer::get_bytes() const {
     return m_bytes;
 }
 

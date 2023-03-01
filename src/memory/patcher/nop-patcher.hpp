@@ -10,7 +10,6 @@
 namespace patcher {
     runtime_buffer nop_area(uintptr_t destination, const size_t length) {
         runtime_buffer buffer;
-
         DWORD old_protection;
 
         VirtualProtect((void*)destination, length, PAGE_EXECUTE_READWRITE, &old_protection);
@@ -27,6 +26,6 @@ namespace patcher {
         }
         VirtualProtect((void*)destination, length, old_protection, &old_protection);
 
-        return runtime_buffer(buffer);
+        return {buffer};
     }
 }

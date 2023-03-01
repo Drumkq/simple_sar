@@ -22,7 +22,7 @@ uintptr_t runtime_buffer::get_address() const {
 
 void runtime_buffer::reallocate_bytes(void *source, size_t length) {
     if (m_address == 0x0) {
-        throw new std::runtime_error("failed to reallocate runtime buffer - address was null. update address before buffer reallocate");
+        throw std::runtime_error("failed to reallocate runtime buffer - address was null. update address before buffer reallocate");
     }
 
     bytes_buffer::reallocate_bytes(source, length);
@@ -46,3 +46,5 @@ runtime_buffer::runtime_buffer(runtime_buffer &buffer)
     : bytes_buffer(buffer), m_address(buffer.m_address) {
 
 }
+
+runtime_buffer::~runtime_buffer() = default;
