@@ -17,9 +17,7 @@ namespace hooks {
         }
 
         void toggle() {
-            m_hooked ? hook() : unhook();
-
-            m_hooked = !m_hooked;
+            !m_hooked ? hook() : unhook();
         }
 
         const bool optional;
@@ -27,6 +25,6 @@ namespace hooks {
         const char* const name;
 
     protected:
-        bool m_hooked;
+        bool m_hooked = false;
     };
 }
