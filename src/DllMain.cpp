@@ -1,45 +1,62 @@
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
 
-#include "memory/memory-helper.hpp"
+#include "hooks/hook-manager.hpp"
 
-const uintptr_t assemblyModule = (uintptr_t)(GetModuleHandle("GameAssembly.dll"));
+// Hooks
+#include "hooks/hooks/speed/speed-hook.hpp"
+using namespace hooks;
 
-const uintptr_t speed_hack_dest_1 = assemblyModule + 0xECDF52;
-const uintptr_t speed_hack_dest_2 = assemblyModule + 0xF54918;
-const uintptr_t speed_hack_dest_3_test = assemblyModule + 0xF50FC4;
+#include <spdlog/spdlog.h>
+
+#pragma region console_utils
+FILE* allocate_console() {
+#ifdef _DEBUG
+    AllocConsole();
+    FILE* f;
+    freopen_s(&f, "CONOUT$", "w", stdout);
+
+    return f;
+#endif
+
+    return nullptr;
+}
+
+void free_console(FILE* f) {
+#ifdef _DEBUG
+    FreeConsole();
+
+    fclose(f);
+#endif
+}
+#pragma endregion
 
 DWORD WINAPI Main(HMODULE hmodule) {
-    bool isSpeed = false;
-    bool isSpeed_test = false;
+    auto console_handle = allocate_console();
 
-    runtime_buffer speed1;
-    runtime_buffer speed2;
-    runtime_buffer speed3_test;
+#ifdef _DEBUG
+    spdlog::set_level(spdlog::level::debug);
+#else
+    spdlog::set_level(spdlog::level::info);
+#endif
+
+    auto hk_speed_hook = std::make_shared<speed_hook>();
+
+    hook_manager hooks({
+        hk_speed_hook,
+    });
+
+    hooks.hook_all();
 
     while (!(GetAsyncKeyState(VK_INSERT) & 1)) {
         if (GetAsyncKeyState(VK_F1) & 1) {
-            isSpeed = !isSpeed;
-
-            if (isSpeed) {
-                memory_helper::nop_area(speed_hack_dest_1, 7u, speed1);
-                memory_helper::nop_area(speed_hack_dest_2, 7u, speed2);
-            } else {
-                memory_helper::patch_area(speed1);
-                memory_helper::patch_area(speed2);
-            }
-        }
-
-        if (GetAsyncKeyState(VK_F2) & 1) {
-            isSpeed_test = !isSpeed_test;
-
-            if (isSpeed_test) {
-                memory_helper::nop_area(speed_hack_dest_3_test, 7u, speed3_test);
-            } else {
-                memory_helper::patch_area(speed3_test);
-            }
+            hk_speed_hook->toggle();
         }
     }
+
+    hooks.unhook_all();
+
+    free_console(console_handle);
 
     FreeLibraryAndExitThread(hmodule, 0u);
 }

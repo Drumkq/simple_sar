@@ -10,5 +10,5 @@ void memory_helper::nop_area(uintptr_t destination, size_t length, runtime_buffe
 }
 
 void memory_helper::patch_area(runtime_buffer &buffer) {
-    return patcher::patch_area(buffer);
+    patcher::patch_area(buffer);
 }

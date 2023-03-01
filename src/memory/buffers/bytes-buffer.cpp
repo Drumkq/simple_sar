@@ -54,3 +54,13 @@ void bytes_buffer::clear() {
 size_t bytes_buffer::get_length() const {
     return m_length;
 }
+
+std::vector<unsigned char> bytes_buffer::get_std_bytes() const {
+    auto v = std::vector<unsigned char>();
+
+    for (int i = 0; i < m_length; i++) {
+        v.push_back(m_bytes[i]);
+    }
+
+    return v;
+}

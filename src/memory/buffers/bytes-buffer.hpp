@@ -1,6 +1,7 @@
 #pragma once
 
 #include <stdexcept>
+#include <vector>
 
 /***
  * @name bytes_buffer
@@ -18,6 +19,7 @@ public:
     virtual void reallocate_bytes(void *source, size_t length);
 
     unsigned char *const get_bytes() const;
+    std::vector<unsigned char> get_std_bytes() const;
 
     size_t get_length() const;
 
