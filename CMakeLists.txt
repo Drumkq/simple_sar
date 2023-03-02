@@ -11,6 +11,7 @@ add_subdirectory("3rdparty/spdlog")
 
 # Create definition of our library
 SET(PROJECT_SRC "${CMAKE_CURRENT_LIST_DIR}/src")
+SET (IMGUI_SOURCE_DIR "3rdparty/imgui")
 
 FILE(GLOB_RECURSE
         PROJECT_FILES
@@ -20,9 +21,11 @@ FILE(GLOB_RECURSE
 )
 
 add_library(${PROJECT_NAME} STATIC ${PROJECT_FILES})
+target_include_directories(${PROJECT_NAME} PUBLIC ${PROJECT_SRC} ${IMGUI_SOURCE_DIR})
+
 add_library(${PROJECT_NAME}_ready4injection MODULE ${PROJECT_FILES})
+target_include_directories(${PROJECT_NAME}_ready4injection PRIVATE ${IMGUI_SOURCE_DIR})
 target_link_libraries(${PROJECT_NAME}_ready4injection PRIVATE spdlog)
-target_include_directories(${PROJECT_NAME} PUBLIC ${PROJECT_SRC})
 
 SET(LIBRARIES_TO_LINK_PRIVATE
         ""
