@@ -1,11 +1,15 @@
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
 
-#include "hooks/hook-manager.hpp"
-
 // Hooks
+#include "hooks/hook-manager.hpp"
 #include "hooks/hooks/speed/speed-hook.hpp"
 using namespace hooks;
+
+// Modules
+#include "modules/modules-manager.hpp"
+#include "modules/features/speed-hack.hpp"
+using namespace modules;
 
 #include <spdlog/spdlog.h>
 
@@ -46,12 +50,15 @@ DWORD WINAPI Main(HMODULE hmodule) {
         hk_speed_hook,
     });
 
+    modules_manager modules(hooks);
+    modules.add_module<features::speed_hack>();
+
     hooks.hook_all();
 
+    modules.start();
+
     while (!(GetAsyncKeyState(VK_INSERT) & 1)) {
-        if (GetAsyncKeyState(VK_F1) & 1) {
-            hk_speed_hook->toggle();
-        }
+        modules.update();
     }
 
     hooks.unhook_all();

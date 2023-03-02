@@ -14,16 +14,17 @@ namespace hooks {
         void unhook_all();
 
         template<class T>
-        std::shared_ptr<T>& get_hook(const char* name) const {
+        std::shared_ptr<T> get_hook(const char* name) {
             for (auto& hook : m_hooks) {
                 if (strcmp(hook->name, name) == EXIT_SUCCESS) {
-                    auto casted_hook = reinterpret_cast<T>(hook);
-                    return casted_hook ? casted_hook : nullptr;
+                    return std::dynamic_pointer_cast<T>(hook);
                 }
             }
+
+            return nullptr;
         }
 
     private:
-        mutable std::list<std::shared_ptr<base_hook>> m_hooks;
+        std::list<std::shared_ptr<base_hook>> m_hooks;
     };
 }
