@@ -1,13 +1,12 @@
 #pragma once
 
 #include "../../base-hook.hpp"
-#include "../../../memory/buffers/runtime-buffer.hpp"
 #include "../../../utils/callbacks/callback.hpp"
 
 #include <windows.h>
 
 namespace hooks {
-    class wndproc_hook : public base_hook {
+    class wndproc_hook final : public base_hook {
     public:
         wndproc_hook();
 

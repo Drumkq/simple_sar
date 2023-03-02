@@ -5,12 +5,14 @@
 #include "hooks/hook-manager.hpp"
 #include "hooks/hooks/speed/speed-hook.hpp"
 #include "hooks/hooks/wndproc/wndproc-hook.hpp"
+#include "hooks/hooks/d3d11/graphics-hook.hpp"
 using namespace hooks;
 
 // Modules
 #include "modules/modules-manager.hpp"
 #include "modules/features/speed-hack.hpp"
 #include "modules/features/wndproc-handler.hpp"
+#include "modules/features/graphics-handler.hpp"
 using namespace modules;
 
 #include <spdlog/spdlog.h>
@@ -49,17 +51,25 @@ DWORD WINAPI Main(HMODULE hmodule) {
     hook_manager hooks({
         std::make_shared<speed_hook>(),
         std::make_shared<wndproc_hook>(),
+        std::make_shared<graphics_hook>(),
     });
 
     modules_manager modules(hooks);
     modules.add_module<features::speed_hack>();
     modules.add_module<features::wndproc_handler>();
+    modules.add_module<features::graphics_handler>();
+
+    auto graphics_handler = modules.get_module<features::graphics_handler>("graphics handler");
 
     hooks.hook_all();
 
     modules.start();
 
-    while (!(GetAsyncKeyState(VK_INSERT) & 1)) {
+    while (!(GetAsyncKeyState(VK_DELETE) & 1)) {
+        if (GetAsyncKeyState(VK_INSERT) & 1) {
+            graphics_handler->toggle_menu();
+        }
+
         modules.update();
     }
 

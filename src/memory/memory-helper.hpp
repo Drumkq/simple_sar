@@ -1,6 +1,7 @@
 #pragma once
 
 #include "buffers/runtime-buffer.hpp"
+#include "buffers/vmt-buffer.hpp"
 
 class memory_helper {
 public:

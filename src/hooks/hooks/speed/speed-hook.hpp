@@ -4,7 +4,7 @@
 #include "../../../memory/buffers/runtime-buffer.hpp"
 
 namespace hooks {
-    class speed_hook : public base_hook {
+    class speed_hook final : public base_hook {
     public:
         speed_hook();
 

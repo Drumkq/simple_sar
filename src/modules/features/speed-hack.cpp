@@ -2,15 +2,16 @@
 
 // required includes
 #include "../modules-manager.hpp"
-#include <windows.h>
 
 // additional includes
 #include <spdlog/spdlog.h>
 
+#include <imgui/imgui.h>
+
 namespace modules {
     namespace features {
         speed_hack::speed_hack(modules_manager *context)
-            : base_module(context, "speed hack") {
+            : base_module(context, "speed hack"), base_renderable() {
             spdlog::info("[module] speed hack loaded successfully!");
             m_speed_hook = m_context->get_hooks().get_hook<hooks::speed_hook>("speed hook");
         }
@@ -18,13 +19,15 @@ namespace modules {
         speed_hack::~speed_hack() = default;
 
         void speed_hack::update() {
-            if (GetAsyncKeyState(0x5A) & 1) {
-                m_speed_hook->toggle();
-            }
+            m_enable ? m_speed_hook->hook() : m_speed_hook->unhook();
         }
 
         void speed_hack::start() {
 
+        }
+
+        void speed_hack::render() {
+            ImGui::Checkbox("Speed hack", &m_enable);
         }
     } // modules
 } // features

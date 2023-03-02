@@ -25,16 +25,20 @@ namespace hooks {
     }
 
     void speed_hook::hook() {
-        memory_helper::nop_area(m_speed_1_addr, 7u, m_speed_1);
-        memory_helper::nop_area(m_speed_2_addr, 7u, m_speed_2);
+        if (!m_hooked) {
+            memory_helper::nop_area(m_speed_1_addr, 7u, m_speed_1);
+            memory_helper::nop_area(m_speed_2_addr, 7u, m_speed_2);
 
-        m_hooked = true;
+            m_hooked = true;
+        }
     }
 
     void speed_hook::unhook() {
-        memory_helper::patch_area(m_speed_1);
-        memory_helper::patch_area(m_speed_2);
+        if (m_hooked) {
+            memory_helper::patch_area(m_speed_1);
+            memory_helper::patch_area(m_speed_2);
 
-        m_hooked = false;
+            m_hooked = false;
+        }
     }
 } // hooks

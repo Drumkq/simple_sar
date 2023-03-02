@@ -1,5 +1,9 @@
 #include "wndproc-handler.hpp"
 
+extern LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
+
+#include <imgui/imgui_impl_win32.h>
+
 #include "../../hooks/hooks/wndproc/wndproc-hook.hpp"
 
 namespace modules {
@@ -22,6 +26,10 @@ namespace modules {
         }
 
         LRESULT wndproc_handler::WndProcHandler(WNDPROC original_wndproc, const HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
+            if (true & ImGui_ImplWin32_WndProcHandler(hWnd, uMsg, wParam, lParam))
+            {
+                return true;
+            }
             return CallWindowProc(original_wndproc, hWnd, uMsg, wParam, lParam);
         }
     } // features
