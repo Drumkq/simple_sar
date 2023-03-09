@@ -7,7 +7,8 @@
 #include <Psapi.h>
 
 namespace scanners {
-    uintptr_t find_pattern(const char* module,
+    // TODO: remove static
+    static uintptr_t find_pattern(const char* module,
                            const char* pattern,
                            const char* mask) {
         static auto get_module = [](const char* module) {

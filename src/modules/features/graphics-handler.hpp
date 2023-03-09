@@ -22,6 +22,8 @@ namespace modules {
 
             bool is_initialized();
 
+            const std::shared_ptr<hooks::graphics_hook>& get_graphics();
+
             template<class T, class Mtd>
             static void add_render_callback(T* _this, Mtd&& mtd) {
                 m_callbacks.emplace_back(std::bind(mtd, _this));

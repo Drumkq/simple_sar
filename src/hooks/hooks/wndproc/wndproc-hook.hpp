@@ -13,6 +13,8 @@ namespace hooks {
         void hook() override;
         void unhook() override;
 
+        void rehook(HWND hwnd);
+
         static utils::callback<LRESULT, LRESULT(WNDPROC original_wndproc, const HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)> callback;
 
     private:

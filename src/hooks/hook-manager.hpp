@@ -6,7 +6,7 @@
 #include "base-hook.hpp"
 
 namespace hooks {
-    class hook_manager {
+    class hook_manager final {
     public:
         explicit hook_manager(std::list<std::shared_ptr<base_hook>> hooks);
 

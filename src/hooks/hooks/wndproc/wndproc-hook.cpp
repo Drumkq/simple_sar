@@ -13,17 +13,29 @@ namespace hooks {
     }
 
     void wndproc_hook::hook() {
-        m_original_wndproc = (WNDPROC)SetWindowLongPtr(m_hwnd, GWLP_WNDPROC, (LONG_PTR)WndProc);
+        if (!m_hooked && m_hwnd != 0x0) {
+            m_original_wndproc = (WNDPROC)SetWindowLongPtr(m_hwnd, GWLP_WNDPROC, (LONG_PTR)WndProc);
 
-        spdlog::debug("original wndproc address = {:p}", (void*)m_original_wndproc);
-
-        m_hooked = true;
+            if (!m_original_wndproc) {
+                m_hooked = false;
+            }
+            else {
+                m_hooked = true;
+            }
+        }
     }
 
     void wndproc_hook::unhook() {
-        SetWindowLongPtr(m_hwnd, GWLP_WNDPROC, (LONG_PTR)m_original_wndproc);
+        if (m_hooked && m_original_wndproc) {
+            SetWindowLongPtr(m_hwnd, GWLP_WNDPROC, (LONG_PTR)m_original_wndproc);
+            m_hooked = false;
+        }
+    }
 
-        m_hooked = false;
+    void wndproc_hook::rehook(HWND hwnd) {
+        m_hwnd = hwnd;
+
+        hook();
     }
 
     LRESULT wndproc_hook::WndProc(const HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {

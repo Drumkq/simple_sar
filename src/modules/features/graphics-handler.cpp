@@ -27,6 +27,10 @@ namespace modules {
 
         }
 
+        const std::shared_ptr<hooks::graphics_hook>& graphics_handler::get_graphics() {
+            return m_graphics;
+        }
+
         HRESULT graphics_handler::present(IDXGISwapChain *pSwapChain,
                                           UINT SyncInterval,
                                           UINT Flags,
